@@ -1,0 +1,25 @@
+You are given a 0-indexed array of integers nums.
+A prefix nums[0..i] is sequential if, for all 1 <= j <= i, nums[j] = nums[j - 1] + 1. In particular, the prefix consisting only of nums[0] is sequential.
+Return the smallest integer x missing from nums such that x is greater than or equal to the sum of the longest sequential prefix.
+
+class Solution {
+    public int missingInteger(int[] nums) {
+        int n = nums.length;
+        int pre = nums[0];
+        for(int i=1; i<n; i++) {
+            if(nums[i] == nums[i-1] + 1) {
+                pre+= nums[i];
+            }
+            else {
+                break;
+            }
+        }
+        Arrays.sort(nums);
+        for(int num : nums) {
+            if(num == pre) {
+                pre++;
+            }
+        }
+        return pre;
+    }
+}
