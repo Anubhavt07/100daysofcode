@@ -1,0 +1,23 @@
+You are given an integer array arr. Sort the integers in the array in ascending order by the number of 1's in their binary representation and in case of two or more integers have the same number of 1's you have to sort them in ascending order.
+Return the array after sorting it.
+
+
+class Solution {
+public:
+static bool cmp(int a , int b )
+{
+    int p =  __builtin_popcount(a);
+    int q =  __builtin_popcount(b);
+    if(p==q){
+        return (a<=b);
+    }
+    else{
+        return (p<q);
+    }
+    }
+    vector<int> sortByBits(vector<int>& arr) {
+        
+        sort(arr.begin(),arr.end(),cmp);
+        return arr;
+    }
+};
