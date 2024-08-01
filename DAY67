@@ -1,0 +1,38 @@
+// You are given the head of a singly linked-list. The list can be represented as:
+// L0 → L1 → … → Ln - 1 → Ln
+// Reorder the list to be on the following form:
+// L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+// You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        stack<ListNode*> s;
+        ListNode* curr = head;
+        while(curr){
+            s.push(curr);
+            curr = curr->next;
+        }
+        curr = head;
+        unordered_map<ListNode*, bool> vis;
+        while(true){
+            ListNode* last = s.top();
+            s.pop();
+            ListNode* next = curr->next;
+            vis[curr] = true;
+            if(vis[last]){ 
+                curr->next = NULL; 
+                break; 
+            } 
+            curr->next = last; 
+            vis[last] = true;
+            curr = curr->next; 
+            if(vis[next]){
+                curr->next = NULL;
+                break;
+            }
+            curr->next = next;
+            curr = curr->next;
+        }
+    }
+};
