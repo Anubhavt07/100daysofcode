@@ -1,0 +1,27 @@
+You are given an integer array nums and an integer k.
+The frequency of an element x is the number of times it occurs in an array.
+An array is called good if the frequency of each element in this array is less than or equal to k.
+Return the length of the longest good subarray of nums.
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+class Solution {
+public:
+    int maxSubarrayLength(vector<int>& nums, int k) {
+        int ans=0;
+        unordered_map<int,int>mp;
+        int n=size(nums);
+        for(int l=0,r=0;r<n;r++){
+            mp[nums[r]]++;   
+            if(mp[nums[r]]>k){
+                while(nums[l]!=nums[r]){
+                    mp[nums[l]]--;
+                    l++;
+                }
+                mp[nums[l]]--;
+                l++;
+            }
+            ans=max(ans,r-l+1);
+        }
+        return ans;
+    }
+};
