@@ -1,0 +1,25 @@
+The school cafeteria offers circular and square sandwiches at lunch break, referred to by numbers 0 and 1 respectively. All students stand in a queue. Each student either prefers square or circular sandwiches.
+The number of sandwiches in the cafeteria is equal to the number of students. The sandwiches are placed in a stack. At each step:
+If the student at the front of the queue prefers the sandwich on the top of the stack, they will take it and leave the queue.
+Otherwise, they will leave it and go to the queue's end.
+
+#include <vector>
+using namespace std;
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+        vector<int> counts(2, 0);
+        for (int student : students)
+            counts[student]++;
+        int remaining = sandwiches.size();
+        for (int sandwich : sandwiches) {
+            if (counts[sandwich] == 0)
+                break;
+            if (remaining == 0)
+                break;
+            counts[sandwich]--;
+            remaining--;
+        }
+        return remaining;
+    }
+};
