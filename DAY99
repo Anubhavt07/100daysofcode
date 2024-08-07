@@ -1,0 +1,20 @@
+The Tribonacci sequence Tn is defined as follows: 
+T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+Given n, return the value of Tn.
+
+class Solution {
+public:
+    int t[38];
+    int f(int n){
+        if (t[n]!=-1) return t[n];
+        switch(n){
+            case 0: return t[n]=0;
+            case 1: case 2: return t[n]=1;
+            default: return t[n]=f(n-3)+f(n-2)+f(n-1);
+        }
+    }
+    int tribonacci(int n) {
+        fill(t, t+38, -1);
+        return f(n);
+    }
+};
