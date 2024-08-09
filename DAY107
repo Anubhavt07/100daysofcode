@@ -1,0 +1,16 @@
+Given an integer array nums that does not contain any zeros, find the largest positive integer k such that -k also exists in the array.
+Return the positive integer k. If there is no such integer, return -1.
+
+class Solution {
+public:
+    int findMaxK(std::vector<int>& nums) {
+        std::sort(nums.begin(), nums.end());
+        int n = nums.size();
+        for (int i = n-1; i >= 0; i--) {
+            if (nums[i] > 0 && std::binary_search(nums.begin(), nums.end(), -nums[i])) {
+                return nums[i];
+            }
+        }
+        return -1; 
+    }
+};
