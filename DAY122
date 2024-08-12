@@ -1,0 +1,15 @@
+Given a binary tree root and an integer target, delete all the leaf nodes with value target.
+Note that once you delete a leaf node with value target, if its parent node becomes a leaf node and has the value target, it should also be deleted (you need to continue doing that until you cannot).
+
+class Solution {
+public:
+    TreeNode* removeLeafNodes(TreeNode* root, int target) {
+        TreeNode* l=NULL, *r=NULL;
+        if (root->left) l=removeLeafNodes(root->left, target);
+        if (root->right) r=removeLeafNodes(root->right, target);
+        root->left=l, root->right=r;
+        if (!root->left && !root->right && root->val==target) 
+            root=NULL;
+        return root;
+    }
+};
