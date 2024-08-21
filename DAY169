@@ -1,0 +1,27 @@
+You are given an integer array nums.
+In one move, you can choose one element of nums and change it to any value.
+Return the minimum difference between the largest and smallest value of nums after performing at most three moves.
+
+class Solution {
+public:
+    static int minDifference(vector<int>& nums) {
+        const int n=nums.size();
+        if (n<=4) return 0;
+        nth_element(nums.begin(), nums.begin()+4, nums.end());
+        vector<int> small(nums.begin(), nums.begin()+4);
+        sort(small.begin(), small.end());
+        nth_element(nums.begin(), nums.begin()+4, nums.end(), greater<int>());
+        vector<int> big(nums.begin(), nums.begin()+4);
+        sort(big.begin(), big.end());
+        int min_diff=INT_MAX;
+        for (int i=0; i<=3; ++i) 
+            min_diff = min(min_diff, big[i]-small[i]);
+        return min_diff;
+    }
+};
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
