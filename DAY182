@@ -1,0 +1,45 @@
+You are given the root of a binary tree with n nodes. Each node is uniquely assigned a value from 1 to n. You are also given an integer startValue representing the value of the start node s, and a different integer destValue representing the value of the destination node t.
+Find the shortest path starting from node s and ending at node t. Generate step-by-step directions of such path as a string consisting of only the uppercase letters 'L', 'R', and 'U'. Each letter indicates a specific direction:
+'L' means to go from a node to its left child node.
+'R' means to go from a node to its right child node.
+'U' means to go from a node to its parent node.
+Return the step-by-step directions of the shortest path from node s to node t.
+
+class Solution {
+public:
+    static TreeNode* LCA(TreeNode* root, int x, int y) {
+        if (root == NULL || root->val == x || root->val == y)
+            return root;
+        TreeNode* l = LCA(root->left, x, y);
+        TreeNode* r = LCA(root->right, x, y);
+        if (l == NULL) return r;
+        if (r == NULL) return l;
+        return root;
+    }
+    static bool dfs(TreeNode* root, int x, string& path, bool rev = 0) {
+        if (root == NULL)
+            return 0;
+        if (root->val == x)
+            return 1;
+        path += (rev ? 'U' : 'L');
+        if (dfs(root->left, x, path, rev)) return 1;
+        path.pop_back();
+        path += (rev ? 'U' : 'R');
+        if (dfs(root->right, x, path, rev)) return 1;
+        path.pop_back();
+        return 0;
+    }
+    static string getDirections(TreeNode* root, int startValue, int destValue) {
+        root = LCA(root, startValue, destValue);
+        string pathFrom = "", pathTo = "";
+        dfs(root, startValue, pathFrom, 1);
+        dfs(root, destValue, pathTo);
+        return pathFrom + pathTo;
+    }
+};
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
