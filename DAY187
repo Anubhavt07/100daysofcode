@@ -1,0 +1,55 @@
+You are given a positive integer k. You are also given:
+a 2D integer array rowConditions of size n where rowConditions[i] = [abovei, belowi], and
+a 2D integer array colConditions of size m where colConditions[i] = [lefti, righti].
+The two arrays contain integers from 1 to k.
+You have to build a k x k matrix that contains each of the numbers from 1 to k exactly once. The remaining cells should have the value 0.
+The matrix should also satisfy the following conditions:
+The number abovei should appear in a row that is strictly above the row at which the number belowi appears for all i from 0 to n - 1.
+The number lefti should appear in a column that is strictly left of the column at which the number righti appears for all i from 0 to m - 1.
+Return any matrix that satisfies the conditions. If no answer exists, return an empty matrix.
+
+class Solution {
+public:
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
+        vector<vector<int>> rowGraph(k + 1), colGraph(k + 1);
+        for (auto& rc : rowConditions) {
+            rowGraph[rc[0]].push_back(rc[1]);
+        }
+        for (auto& cc : colConditions) {
+            colGraph[cc[0]].push_back(cc[1]);
+        }
+        vector<int> rowOrder = topoSort(rowGraph, k);
+        vector<int> colOrder = topoSort(colGraph, k);
+        if (rowOrder.empty() || colOrder.empty()) return {};
+        vector<vector<int>> result(k, vector<int>(k, 0));
+        unordered_map<int, int> rowMap, colMap;
+        for (int i = 0; i < k; ++i) {
+            rowMap[rowOrder[i]] = i;
+            colMap[colOrder[i]] = i;
+        }
+        for (int i = 1; i <= k; ++i) {
+            result[rowMap[i]][colMap[i]] = i;
+        }
+        return result;
+    }
+    vector<int> topoSort(vector<vector<int>>& graph, int k) {
+        vector<int> inDegree(k + 1, 0), order;
+        queue<int> q;
+        for (int i = 1; i <= k; ++i) {
+            for (int j : graph[i]) {
+                ++inDegree[j];
+            }
+        }
+        for (int i = 1; i <= k; ++i) {
+            if (inDegree[i] == 0) q.push(i);
+        }
+        while (!q.empty()) {
+            int node = q.front(); q.pop();
+            order.push_back(node);
+            for (int adj : graph[node]) {
+                if (--inDegree[adj] == 0) q.push(adj);
+            }
+        }
+        return order.size() == k ? order : vector<int>();
+    }
+};
