@@ -1,0 +1,31 @@
+You are given an m x n integer matrix points (0-indexed). Starting with 0 points, you want to maximize the number of points you can get from the matrix.
+To gain points, you must pick one cell in each row. Picking the cell at coordinates (r, c) will add points[r][c] to your score.
+However, you will lose points if you pick a cell too far from the cell that you picked in the previous row. For every two adjacent rows r and r + 1 (where 0 <= r < m - 1), picking cells at coordinates (r, c1) and (r + 1, c2) will subtract abs(c1 - c2) from your score.
+
+class Solution {
+public:
+    long long maxPoints(vector<vector<int>>& points) {
+        int m = points.size();
+        int n = points[0].size();
+        vector<long long> dp(n, 0);
+        for (int j = 0; j < n; ++j) {
+            dp[j] = points[0][j];
+        }
+        for (int i = 1; i < m; ++i) {
+            vector<long long> leftMax(n), rightMax(n), newDp(n);
+            leftMax[0] = dp[0];
+            for (int j = 1; j < n; ++j) {
+                leftMax[j] = max(leftMax[j - 1], dp[j] + j);
+            }
+            rightMax[n - 1] = dp[n - 1] - (n - 1);
+            for (int j = n - 2; j >= 0; --j) {
+                rightMax[j] = max(rightMax[j + 1], dp[j] - j);
+            }
+            for (int j = 0; j < n; ++j) {
+                newDp[j] = max(leftMax[j] - j, rightMax[j] + j) + points[i][j];
+            }
+            dp = newDp;
+        }
+        return *max_element(dp.begin(), dp.end());
+    }
+};
