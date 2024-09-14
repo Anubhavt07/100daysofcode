@@ -1,0 +1,30 @@
+You are given an integer array nums of size n.
+Consider a non-empty subarray from nums that has the maximum possible bitwise AND.
+In other words, let k be the maximum value of the bitwise AND of any subarray of nums. Then, only subarrays with a bitwise AND equal to k should be considered.
+Return the length of the longest such subarray.
+The bitwise AND of an array is the bitwise AND of all the numbers in it.
+A subarray is a contiguous sequence of elements within an array.
+
+class Solution {
+public:
+    static int longestSubarray(vector<int>& nums) {
+        const int n=nums.size();
+        int m=max_element(nums.begin(), nums.end())-nums.begin(); 
+        int maxLen=0, x = nums[m];
+        for (int i = m; i < n; i++) {
+            int len = 0;
+            while (i < n && nums[i] == x) {
+                i++;
+                len++;
+            }
+            maxLen = max(maxLen, len);
+        }
+        return maxLen;
+    }
+};
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
