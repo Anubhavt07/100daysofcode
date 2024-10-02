@@ -1,0 +1,22 @@
+Given an array of integers arr, replace each element with its rank.
+The rank represents how large the element is. The rank has the following rules:
+Rank is an integer starting from 1.
+The larger the element, the larger the rank. If two elements are equal, their rank must be the same.
+Rank should be as small as possible.
+
+class Solution {
+public:
+    std::vector<int> arrayRankTransform(std::vector<int>& arr) {
+        std::unordered_map<int, int> valueToRank;  
+        std::vector<int> sortedUniqueNumbers = arr; 
+        std::sort(sortedUniqueNumbers.begin(), sortedUniqueNumbers.end());
+        sortedUniqueNumbers.erase(std::unique(sortedUniqueNumbers.begin(), sortedUniqueNumbers.end()), sortedUniqueNumbers.end());
+        for (int i = 0; i < sortedUniqueNumbers.size(); i++) {
+            valueToRank[sortedUniqueNumbers[i]] = i + 1;
+        }
+        for (int i = 0; i < arr.size(); i++) {
+            arr[i] = valueToRank[arr[i]];
+        }
+        return arr;  
+    }
+};
