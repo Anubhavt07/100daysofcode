@@ -1,0 +1,26 @@
+Given an integer array nums, find the maximum possible bitwise OR of a subset of nums and return the number of different non-empty subsets with the maximum bitwise OR.
+An array a is a subset of an array b if a can be obtained from b by deleting some (possibly zero) elements of b. Two subsets are considered different if the indices of the elements chosen are different.
+The bitwise OR of an array a is equal to a[0] OR a[1] OR ... OR a[a.length - 1] (0-indexed).
+
+class Solution {
+public:
+    int n;
+    unsigned max_OR;
+    int f(int i, unsigned acc_or, vector<int>& nums){
+        if (i<0) return (acc_or==max_OR)?1:0;
+        int skip=f(i-1, acc_or, nums);
+        int take=f(i-1, acc_or| nums[i], nums);
+        return skip+take;
+    }
+    int countMaxOrSubsets(vector<int>& nums) {
+        n=nums.size();
+        max_OR=accumulate(nums.begin(), nums.end(), 0, bit_or<>());
+        return f(n-1, 0, nums);
+    }
+};
+auto init = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
