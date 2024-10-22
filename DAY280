@@ -1,0 +1,28 @@
+You are given the root of a binary tree and a positive integer k.
+The level sum in the tree is the sum of the values of the nodes that are on the same level.
+Return the kth largest level sum in the tree (not necessarily distinct). If there are fewer than k levels in the tree, return -1.
+Note that two nodes are on the same level if they have the same distance from the root.
+
+class Solution {
+public:
+    static void f(TreeNode* root, int level, long long* sum, int& sz){
+        if (sz<=level) sz++;
+        sum[level]+=root->val;
+        if (root->left) f(root->left, level+1, sum, sz);
+        if (root->right) f(root->right, level+1, sum, sz);
+    }
+    static long long kthLargestLevelSum(TreeNode* root, int k) {
+        long long sum[100000]={0};
+        int sz=0;
+        f(root, 0, sum, sz);
+        if (sz<k) return -1;
+        nth_element(sum, sum+(k-1), end(sum), greater<>());
+        return sum[k-1];
+    }
+};
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
