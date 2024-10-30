@@ -1,0 +1,27 @@
+You are given an integer array nums. A subsequence of nums is called a square streak if:
+The length of the subsequence is at least 2, and
+after sorting the subsequence, each element (except the first element) is the square of the previous number.
+Return the length of the longest square streak in nums, or return -1 if there is no square streak.
+
+const long long N=100001;
+class Solution {
+public:
+    int longestSquareStreak(vector<int>& nums) {
+        bitset<N> hasX=0;
+        int M=0;
+        for(int x: nums){
+            hasX[x]=1;
+            M=max(M, x);
+        }
+        int maxStreak=0;
+        for(long long x: nums){
+            int streak=1;
+            for(long long z=x*x; z<=M; z*=z)
+                if (hasX[z]) streak++;
+                else break;
+            maxStreak=max(maxStreak, streak);
+            if (maxStreak==5) break;
+        }
+        return maxStreak<2?-1:maxStreak;
+    }
+};
